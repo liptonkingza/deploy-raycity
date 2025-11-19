@@ -73,17 +73,52 @@ function doPost(e) {
         result = { success: false, message: 'Invalid action' };
     }
     
-    return ContentService
-      .createTextOutput(JSON.stringify(result))
-      .setMimeType(ContentService.MimeType.JSON);
+    // ส่ง HTML ที่ส่ง postMessage กลับไปยัง parent window
+    const htmlOutput = HtmlService.createHtmlOutput(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <base target="_top">
+      </head>
+      <body>
+        <script>
+          try {
+            const result = ${JSON.stringify(result)};
+            window.parent.postMessage(result, '*');
+          } catch(e) {
+            window.parent.postMessage({
+              success: false,
+              message: 'Error: ' + e.toString()
+            }, '*');
+          }
+        </script>
+      </body>
+      </html>
+    `).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    
+    return htmlOutput;
       
   } catch (error) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ 
-        success: false, 
-        message: 'Error: ' + error.toString() 
-      }))
-      .setMimeType(ContentService.MimeType.JSON);
+    const errorResult = { 
+      success: false, 
+      message: 'Error: ' + error.toString() 
+    };
+    
+    const htmlOutput = HtmlService.createHtmlOutput(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <base target="_top">
+      </head>
+      <body>
+        <script>
+          window.parent.postMessage(${JSON.stringify(errorResult)}, '*');
+        </script>
+      </body>
+      </html>
+    `).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    
+    return htmlOutput;
   }
 }
 
