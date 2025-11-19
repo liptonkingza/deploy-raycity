@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - RayCity</title>
+    <link rel="icon" type="image/png" href="img/favicon .png">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="dashboard-page">
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="img/logo.png" alt="RayCity Logo" class="nav-logo-image">
+                <h2>RAYCITY</h2>
+            </div>
+            <div class="nav-user">
+                <span id="currentUsername"></span>
+                <button id="logoutBtn" class="btn-logout">Logout</button>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            <h1 class="dashboard-title">Dashboard</h1>
+            
+            <div class="menu-grid">
+                <a href="npc.html" class="menu-card">
+                    <div class="card-icon">👤</div>
+                    <h3>NPC</h3>
+                    <div class="card-glow"></div>
+                </a>
+                
+                <a href="farm.html" class="menu-card">
+                    <div class="card-icon">🌾</div>
+                    <h3>รายการฟาร์ม</h3>
+                    <div class="card-glow"></div>
+                </a>
+                
+                <a href="trading.html" class="menu-card">
+                    <div class="card-icon">💰</div>
+                    <h3>รายการซื้อ-ขาย</h3>
+                    <div class="card-glow"></div>
+                </a>
+                
+                <a href="prices.html" class="menu-card">
+                    <div class="card-icon">📊</div>
+                    <h3>เรทราคาของ</h3>
+                    <div class="card-glow"></div>
+                </a>
+            </div>
+        </div>
+    </main>
+    
+    <script src="js/config.js"></script>
+    <script src="js/auth-google-sheets.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
+

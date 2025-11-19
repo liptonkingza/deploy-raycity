@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - RayCity</title>
+    <link rel="icon" type="image/png" href="img/favicon .png">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="auth-page">
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+    
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="logo-container">
+                <img src="img/logo.png" alt="RayCity Logo" class="logo-image">
+                <h1 class="logo-text">RAYCITY</h1>
+                <div class="logo-glow"></div>
+            </div>
+            
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                
+                <button type="submit" class="btn-primary">
+                    <span>LOGIN</span>
+                    <div class="btn-glow"></div>
+                </button>
+                
+                <div class="auth-link">
+                    <p>ยังไม่มีบัญชี? <a href="register.html">สมัครสมาชิก</a></p>
+                </div>
+            </form>
+            
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+    </div>
+    
+    <script src="js/config.js"></script>
+    <script src="js/auth-google-sheets.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
+
