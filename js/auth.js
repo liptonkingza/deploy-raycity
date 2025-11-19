@@ -1,18 +1,62 @@
-// Authentication System - ใช้ Google Sheets เท่านั้น
+// Authentication System
 // CONFIG should be loaded from config.js before this file
-const CONFIG = window.CONFIG || {
-    storageType: 'google-sheets',
-    googleSheetsApiUrl: 'YOUR_GOOGLE_SHEETS_API_URL_HERE'
-};
+const CONFIG = window.CONFIG || { storageType: 'google-sheets', apiBase: '/.netlify/functions', googleSheetsApiUrl: '' };
 
-// Register new user - ใช้ Google Sheets เท่านั้น
+// Wrapper functions that route to the appropriate storage backend
 async function registerUser(username, password) {
-    return await registerUserGoogleSheets(username, password);
+    if (CONFIG.storageType === 'mongodb') {
+        return await registerUserMongo(username, password);
+    }
+    if (CONFIG.storageType === 'google-sheets') {
+        return await registerUserGoogleSheets(username, password);
+    }
+    // fallback: not implemented
+    return { success: false, message: 'No storage backend configured' };
 }
 
-// Login user - ใช้ Google Sheets เท่านั้น
 async function loginUser(username, password) {
-    return await loginUserGoogleSheets(username, password);
+    if (CONFIG.storageType === 'mongodb') {
+        return await loginUserMongo(username, password);
+    }
+    if (CONFIG.storageType === 'google-sheets') {
+        return await loginUserGoogleSheets(username, password);
+    }
+    return { success: false, message: 'No storage backend configured' };
+}
+
+// MongoDB (Netlify Functions) implementations (frontend -> serverless)
+async function registerUserMongo(username, password) {
+    try {
+        const res = await fetch(`${CONFIG.apiBase}/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        return await res.json();
+    } catch (e) {
+        console.error('registerUserMongo error', e);
+        return { success: false, message: 'Network error' };
+    }
+}
+
+async function loginUserMongo(username, password) {
+    try {
+        const res = await fetch(`${CONFIG.apiBase}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+            credentials: 'include'
+        });
+        const data = await res.json();
+        if (data && data.success) {
+            // Keep same behavior as Google Sheets flow: store currentUser in sessionStorage
+            sessionStorage.setItem('currentUser', JSON.stringify({ username: data.username || username }));
+        }
+        return data;
+    } catch (e) {
+        console.error('loginUserMongo error', e);
+        return { success: false, message: 'Network error' };
+    }
 }
 
 // Check if user is logged in
